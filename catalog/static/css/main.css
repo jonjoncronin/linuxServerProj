@@ -1,0 +1,96 @@
+/**********************************************************
+ * Style Sheet for Jon Cronin Catalog App Project -
+ * This style sheet attempts to capture the design/style of the
+ * page/site content leaving the HTML pages to include just the
+ * content itself.
+ *********************************************************/
+
+body {
+   font-family: "Comfortaa", cursive;
+   background-color: white;
+   margin: 0;
+}
+
+.relaxed {
+    transition: 0.4s;
+}
+
+button.accordion {
+   background-color: #eee;
+   color: #444;
+   cursor: pointer;
+   /*padding: 18px;*/
+   border: none;
+   text-align: left;
+   outline: none;
+   width: 70%;
+}
+
+button.accordion.active, button.accordion:hover {
+   background-color: #ddd;
+}
+
+button.accordion:before {
+   content: '\02795';
+   /* Unicode character for "plus" sign (+) */
+   font-size: 13px;
+   color: #777;
+   float: left;
+   margin-right: 5px;
+}
+
+button.accordion.active:before {
+   content: "\2796";
+   /* Unicode character for "minus" sign (-) */
+}
+
+.accordion-guts {
+  width: 70%;
+}
+
+.accordion-mgmt {
+  width: 20%;
+}
+
+.accordion-guts-category {
+  font-variant: small-caps;
+  font-style: italic;
+  font-weight: 900;
+}
+
+#header {
+  min-width: 320px;
+}
+
+#loginStatus {
+  clear: both;
+}
+
+#addItemsButton {
+  width: 10%;
+}
+
+#targetContent {
+  width: 90%;
+}
+
+#headerMenuToggle {
+  margin-top: 8px;
+}
+
+#authCard {
+  max-width: 30%;
+  margin: auto;
+  text-align: center
+}
+#pageGuts {
+  margin-left: 0;
+  transition: 0.4s;
+}
+
+@media only screen and (min-width: 993px) {
+  #pageGuts {
+    margin-left: 17%;
+    transition: 0.4s;
+  }
+}

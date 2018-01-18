@@ -22,7 +22,15 @@
                 class="w3-container w3-row w3-blue-gray">
             <div id="authBlock"
                  class="w3-container w3-col s2 m2 l2 w3-right w3-right-align">
-
+                {% if 'username' not in session %}
+                <a href="{{url_for('showAuth')}}"
+                   class="w3-button w3-dark-gray w3-right relaxed">Login</a>
+                {% else %}
+                <a href="{{url_for('disconnect')}}"
+                   class="w3-button w3-dark-gray w3-right relaxed">Logout</a>
+                <div id="loginStatus"
+                     class="w3-small w3-right">logged in as {{session['username']}}</div>
+                {% endif %}
             </div>
             <div id="headerBlock"
                  class="w3-container w3-col s10 m10 l10 w3-left">
@@ -62,14 +70,21 @@
                 <div class="w3-bar-item w3-border-bottom">Categories</div>
                 <a href="{{url_for('showItems')}}"
                    class="w3-bar-item w3-button relaxed">All Categories</a>
-
+                   {% if categories %}
+                    {% for entry in categories %}
+                <a href="{{url_for('showItemsForCategory', category_id = entry.id)}}"
+                   class="w3-bar-item w3-button relaxed">{{entry.name}}</a>
+                    {% endfor %}
+                   {% endif %}
             </nav>
             <!-- Main -->
             <div id="pageGuts"
                  class="w3-container w3-col s12 m12 l10">
                 <div id="addItemsButton"
                      class="w3-right w3-right-align">
-
+                    <a href="{{url_for('newItem')}}">
+                        <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
+                    </a>
                 </div>
                 <section id="targetContent"
                          class="w3-left">
@@ -81,7 +96,12 @@
                      {% for item in items %}
                     <button class="w3-button accordion relaxed">{{item.name}}</button>
                     <span class="accordion-mgmt">
-                      
+                      {% if 'user_id' in session %}
+                       {% if item.user_id == session['user_id'] %}
+                    <a href="{{url_for('editItem', item_id = item.id)}}"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+                    <a href="{{url_for('deleteItem', item_id = item.id)}}"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
+                       {% endif %}
+                      {% endif %}
                     </span>
                     <div class="w3-container w3-hide relaxed accordion-guts">
                         Description:

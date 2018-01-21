@@ -70,11 +70,11 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
      apt-get update
      apt-get upgrade -y
-     apt-get install -y finger python python-pip python3 python3-pip apache2 libapache2-mod-wsgi postgresql postgresql-contrib
+     apt-get install -y finger python python-pip python3 python3-pip apache2 libapache2-mod-wsgi libapache2-mod-wsgi-py3 postgresql postgresql-contrib
      pip2 install --upgrade pip
-     pip2 install flask oauth2client flask-httpauth sqlalchemy flask-sqlalchemy
+     pip2 install flask oauth2client flask-httpauth sqlalchemy flask-sqlalchemy psycopg2
      pip3 install --upgrade pip
-     pip3 install flask oauth2client flask-httpauth sqlalchemy flask-sqlalchemy
+     pip3 install flask oauth2client flask-httpauth sqlalchemy flask-sqlalchemy psycopg2
      echo "VM provisioning complete"
    SHELL
 end

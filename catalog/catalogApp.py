@@ -42,7 +42,7 @@ session = DBSession()
 
 # Create debug log for capturing events that happen during execution
 # Log output to file and to the console for now
-logging.basicConfig(filename='logs/debug.log', filemode='a', level=logging.DEBUG)
+logging.basicConfig(filename='logs/debug.log', filemode='a+', level=logging.DEBUG)
 consoleHandler = logging.StreamHandler()
 logging.getLogger('').addHandler(consoleHandler)
 
@@ -441,8 +441,9 @@ def showAuth():
     A flask template for authenticate.html.
     """
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
-                    for x in xrange(32))
+                    for x in range(32))
     login_session["state"] = state
+    logging.debug("Authentication Session {0} started".format(login_session["state"]))
     # return "The current session state is %s" % login_session["state"]
     return render_template("authenticate.html", STATE=state)
 
@@ -464,7 +465,9 @@ def gconnect():
     authenticate.html page to indicate success or failure.
     """
     # Validate state token
-    if request.args.get("state") != login_session["state"]:
+    sessionState = request.args.get('state')
+    logging.debug("Google OAuth2 phase started for session {0}".format(sessionState))
+    if sessionState != login_session["state"]:
         response = make_response(json.dumps("Invalid state parameter."), 401)
         response.headers["Content-Type"] = "application/json"
         return response
@@ -490,7 +493,8 @@ def gconnect():
            "oauth2/v1/tokeninfo?access_token={0}".format(access_token))
 
     h = httplib2.Http()
-    result = json.loads(h.request(url, "GET")[1])
+
+    result = json.loads(h.request(url, "GET")[1].decode('utf-8'))
     # If there was an error in the access token info, abort.
     if result.get("error") is not None:
         logging.debug("Error in the access info token")
@@ -611,12 +615,15 @@ def fbconnect():
     A string output of HTML syntax and text that is used by on the
     authenticate.html page to indicate success or failure.
     """
-    if request.args.get("state") != login_session["state"]:
+    sessionState = request.args.get('state')
+    logging.debug("Facebook OAuth2 phase started for session {0}".format(sessionState))
+
+    if sessionState != login_session["state"]:
         logging.debug("Invalid state parameter")
         response = make_response(json.dumps("Invalid state parameter."), 401)
         response.headers["Content-Type"] = "application/json"
         return response
-    access_token = request.data
+    access_token = (request.data).decode('utf-8')
     logging.debug("access token received {0} ".format(access_token))
 
     app_id = json.loads(open("fb_client_secrets.json", "r").read())[
@@ -629,24 +636,21 @@ def fbconnect():
            format(app_id, app_secret, access_token))
 
     h = httplib2.Http()
-    result = h.request(url, "GET")[1]
+    result = h.request(url, "GET")[1].decode('utf-8')
 
     # Use token to get user info from API
-    userinfo_url = "https://graph.facebook.com/v2.10/me"
-
     # Due to the formatting for the result from the server token exchange we
     # have to split the token first on commas and select the first index which
     # gives us the key : value for the server access token then we split it on
     # colons to pull out the actual token value  and replace the remaining
     # quotes with nothing so that it can be used directly in the graph api
     # calls
-
     token = result.split(',')[0].split(':')[1].replace('"', '')
 
     url = ("https://graph.facebook.com/"
            "v2.10/me?access_token={0}&fields=name,id,email".format(token))
     h = httplib2.Http()
-    result = h.request(url, "GET")[1]
+    result = h.request(url, "GET")[1].decode('utf-8')
     data = json.loads(result)
     logging.debug(data)
     login_session["provider"] = "facebook"
@@ -662,7 +666,7 @@ def fbconnect():
            "v2.10/me/picture?access_token={0}"
            "&redirect=0&height=200&width=200".format(token))
     h = httplib2.Http()
-    result = h.request(url, "GET")[1]
+    result = h.request(url, "GET")[1].decode('utf-8')
     data = json.loads(result)
 
     login_session["picture"] = data["data"]["url"]

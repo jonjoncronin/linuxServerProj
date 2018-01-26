@@ -337,35 +337,37 @@ what you get just after installing. The only differences are that I've added a
 new role/user that is going to be used by the application to perform the DB
 transactions and I've added a new Database.
 
-#### Roles/Users
-Instead of using the default "postgres" user that was added by the PostgreSQL
-installation I wanted to create a separate role/user that has a more limited
-privilege level. This user should not have superuser power. In essence this user
-should really just be able to add and remove content to the database that is
-specific to the application it is associated with.
-
-As the "postgres" user and using the `createuser` command that is added with a
-PostgreSQL installation I was able to add a new 'db_admin' role/user. I also
-setup that user with a special password that is utilized by the application when
-setting up the connection between the application and the database.
-
-**NOTE: PostgreSQL doesn't have users. Instead they call it a role.**
-
 #### Database for the application
 In addition to creating a new user/role I wanted to create a new database that
 is to be used by the application when storing and retrieving information that
 is hosted by the web server.
 
-Again as the "postgres" user and using the `createdb` command that is added with
-a PostgreSQL installation I was able to add a new "catalogStore" database that
+As the "postgres" user and using the `createdb` command that is added with a
+PostgreSQL installation I was able to add a new "catalogstore" database that
 will contain the User, Item, and Category tables that will themselves contain
 the item data that is used by my web application.
+
+#### Roles/Users
+Instead of using the default "postgres" user that was added by the PostgreSQL
+installation I wanted to create a separate role/user that has a more limited
+privilege level. This user should NOT have superuser power. In essence this user
+should really just be able to add and remove content to the database that is
+specific to the application it is associated with.
+
+Again as the "postgres" user and using the `createuser` command that is added
+with a PostgreSQL installation I was able to add a new 'db_admin' role/user. I
+also setup that user with a special password that is utilized by the application
+when setting up the connection between the application and the database. I
+also needed to grant access for the db_admin to the catalogstore database as
+by default a new user/role has no database access.
+
+**NOTE: PostgreSQL doesn't have users. Instead they call it a role.**
 
 ### File system configuration
 In order to host the Item Catalog application I needed a way to deploy my
 implementation to the production server. There are a couple ways to do this
 but ultimately once the code is on the server it needs to be in a location
-that the www-data user and group have access to and permissions for.
+that the www-data user and www-data group have access to and permissions for.
 
 Getting source code onto the server can be accomplished with a handful of
 different methods - SFTP, FTP, scpy, git. As we've been using git throughout

@@ -8,6 +8,35 @@ based on other stacks.
 The Linux Web Server Project is the 5th project laid out in the curriculum for
 the Udacity Full Stack web developer Nanodegree.
 
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [Summary](#summary)
+- [Requirements](#requirements)
+	- [User Management](#user-management)
+	- [Security](#security)
+	- [Application Functionality](#application-functionality)
+	- [Documentation](#documentation)
+- [Web Server Configuration Details](#web-server-configuration-details)
+	- [Lightsail Server](#lightsail-server)
+		- [Server Connection information](#server-connection-information)
+	- [System Software and Package Installation](#system-software-and-package-installation)
+		- [Added Packages](#added-packages)
+		- [Python Packages](#python-packages)
+	- [Linux Server Configuration](#linux-server-configuration)
+		- [User configuration](#user-configuration)
+			- [sshd configuration](#sshd-configuration)
+			- [Key based authentication](#key-based-authentication)
+		- [Firewall configuration](#firewall-configuration)
+		- [Apache2 Web Server configuration](#apache2-web-server-configuration)
+			- [DocumentRoot configuration](#documentroot-configuration)
+			- [WSGIAlias configuration](#wsgialias-configuration)
+			- [WSGIDaemonProcess configuration](#wsgidaemonprocess-configuration)
+		- [PostgreSQL Database configuration](#postgresql-database-configuration)
+			- [Database for the application](#database-for-the-application)
+			- [Roles/Users](#rolesusers)
+		- [File system configuration](#file-system-configuration)
+
+<!-- /TOC -->
 # Requirements
 ## User Management
 * The grader user can run commands using sudo to inspect files that are
@@ -301,13 +330,13 @@ applications on the backed. For my simple deployment I only needed to define one
 alias. This alias handles page requests to the root URL and defines some
 parameters that the WSGI needs.
 ```
-WSGIScriptAlias / /var/www/catalog/myapp.wsgi
-	<Directory /var/www/catalog/>
-		Options FollowSymLinks
-		WSGIProcessGroup catalogApp
-		Order allow,deny
-		Allow from all
-	</Directory>
+WSGIScriptAlias / /var/www/catalog/myapp.wsgi  
+  <Directory /var/www/catalog/>  
+    Options FollowSymLinks  
+    WSGIProcessGroup catalogApp  
+    Order allow,deny  
+    Allow from all  
+  </Directory>
 ```
 
 #### WSGIDaemonProcess configuration
@@ -318,10 +347,10 @@ there for logging as well as Google and Facebook API App secrets. Further
 I wanted to specify what user and group is running the application so that
 I am not running it as root or some other user with elevated permissions.
 ```
-WSGIDaemonProcess catalogApp user=www-data
-															group=www-data
-															home=/var/www/catalog
-															umask=002
+WSGIDaemonProcess catalogApp user=www-data  
+                             group=www-data  
+                             home=/var/www/catalog  
+                             umask=002
 ```
 
 ### PostgreSQL Database configuration

@@ -35,7 +35,7 @@ APPLICATION_NAME = "Catalog Project Application"
 
 # Create the connections and sessions to the catalog database
 # engine = create_engine("sqlite:///catalog.db")
-engine = create_engine('postgresql://db_admin:admin@localhost:5432/catalogStore')
+engine = create_engine('postgresql://db_admin:admin@localhost:5432/catalogstore')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()

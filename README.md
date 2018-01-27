@@ -87,7 +87,7 @@ the IP of the server.
 
 ### Server Connection information
 * Server IP address
-	- 52.11.82.198
+	- 35.163.101.240
 * SSH port (not default SSH)
 	- port 2200
 * Users (Certificate based authentication ONLY)
@@ -104,7 +104,7 @@ has it's public key equivalent stored on the server. See the key based
 authentication section for more details.
 
 ```
-> ssh grader@52.11.82.198 -p 2200 -i <path to your private key>
+> ssh grader@35.163.101.240 -p 2200 -i <path to your private key>
 ```
 
 ## System Software and Package Installation

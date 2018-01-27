@@ -87,7 +87,7 @@ the IP of the server.
 
 ### Server Connection information
 * Server IP address
-	- 35.163.101.240
+	- 34.213.187.111
 * SSH port (not default SSH)
 	- port 2200
 * Users (Certificate based authentication ONLY)
@@ -104,7 +104,7 @@ has it's public key equivalent stored on the server. See the key based
 authentication section for more details.
 
 ```
-> ssh grader@35.163.101.240 -p 2200 -i <path to your private key>
+> ssh grader@34.213.187.111 -p 2200 -i <path to your private key>
 ```
 
 ## System Software and Package Installation
@@ -288,8 +288,6 @@ through that administration page, downloaded the private key and included it
 with the project submittal. I don't think that would have followed in the
 spirit of the assignment. I instead wanted to make sure I understood how key
 based authentication is deployed.
-
-cat ~/.ssh/linuxProj.pub | ssh grader@52.11.82.198 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >>  ~/.ssh/authorized_keys"
 
 ### Firewall configuration
 Using the uncomplicated firewall (UFW) application that comes preinstalled with
